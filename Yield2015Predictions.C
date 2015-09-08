@@ -1,14 +1,16 @@
 void Yield2015Predictions(){
 
-  #define da_BIN_NUM 11
-  #define NptbinTrigger 11
-  
+  #define da_BIN_NUM 11  
   Double_t dataranges[da_BIN_NUM+1] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.};
   Double_t datapoints[da_BIN_NUM] = {3.,4.,5.,6.25,8.,10.,12.,14.5,18.,24.,34.};
   Double_t ptcenters[da_BIN_NUM] = {2.91.,3.91.,4.91.,6.10.25,7.78,9.79,11.8,14.17,17.52.,22.71,31.89};
-  
+
+  //#define NptbinTrigger 9
+  //Double_t ptbinTrigger[NptbinTrigger+1] = {5,10,15,20,25,30,35,40,45,50};
+  #define NptbinTrigger 11
   Double_t ptbinTrigger[NptbinTrigger+1] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.};
-  Double_t ptbinTriggerwidth[NptbinTrigger+1] = {1,1,1,1.5,2,2,2,3,4,8,12};
+  
+  TH1F* hfitref = new TH1F("hfitref","",NptbinTrigger,ptbinTrigger);
   
   TFile*file=new TFile("DataCMSfile/PromptRAA_D0_PbPb_spectrum_fonll_effunpre_cent0to100_ptbin12_y1_dataplusfonll.root");
   TH1F* hSpectrumOriginal=(TH1F*)file->Get("D0_pbpb_spectrum");
@@ -20,9 +22,8 @@ void Yield2015Predictions(){
   
   hSpectrum->Scale(2*0.0388*3.01781340000000000e+07*5.67e-9*1./0.94);
 
-  Double_t iexl[da_BIN_NUM],iexr[da_BIN_NUM],acrosssec[da_BIN_NUM], efficiency[da_BIN_NUM],acrosssecerr[da_BIN_NUM],  aminErr[da_BIN_NUM], amaxErr[da_BIN_NUM];
+  Double_t iexl[da_BIN_NUM],iexr[da_BIN_NUM],acrosssec[da_BIN_NUM], efficiency[da_BIN_NUM],acrosssecerr[da_BIN_NUM],aminErr[da_BIN_NUM],amaxErr[da_BIN_NUM];
   int xsecbin=-1;
-  
   
   for(int i=0;i<da_BIN_NUM;i++){
       iexl[i] = datapoints[i]-dataranges[i];
@@ -32,7 +33,7 @@ void Yield2015Predictions(){
       acrosssec[i]=hSpectrum->GetBinContent(xsecbin);
       efficiency[i]=hAcc->GetBinContent(xsecbinEff);
       acrosssecerr[i]=hSpectrum->GetBinError(xsecbin);
-      double yields=acrosssec[i]*efficiency[i]*ptbinTriggerwidth[i];
+      double yields=acrosssec[i]*efficiency[i]*(dataranges[i+1]-dataranges[i]);
       hDen->SetBinContent(i+1,acrosssec[i]);
       cout<<"bin center="<<datapoints[i]<<",dN/dpt="<<acrosssec[i]<<",error dN/dpt="<<acrosssecerr[i]<<",eff="<<efficiency[i]<<", Nyields="<<yields<<endl;
   }   
@@ -78,22 +79,41 @@ void Yield2015Predictions(){
   TH1F* hrebinnedspectrum = new TH1F("hrebinnedspectrum","",NptbinTrigger,ptbinTrigger);
   
   for (int j=0;j<NptbinTrigger;j++){
-    double integ = fdata->Integral(ptbinTrigger[j],ptbinTrigger[j+1])/ptbinTriggerwidth[j];
-    double integerr = fdata->IntegralError(ptbinTrigger[j],ptbinTrigger[j+1])/ptbinTriggerwidth[j];
+    double integ = fdata->Integral(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
+    double integerr = fdata->IntegralError(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
     //double integ = hSpectrum->GetBinContent(hSpectrum->FindBin(datapoints[j]));
-    //double yieldsfinal=integ*ptbinTriggerwidth[j]*efficiency[j];
+    //double yieldsfinal=integ*hfitref->GetBinWidth(j+1)*efficiency[j];
     hrebinnedspectrum->SetBinContent(j+1,integ);
     hrebinnedspectrum->SetBinError(j+1,integerr);
     cout<<"dN/dpt rebinned="<<integ<<",error="<<integerr<<endl;
   }
   
-  TH1F* hratio=(TH1F*)hrebinnedspectrum->Clone("hratio");
-  hratio->Divide(hDen);
-  
-  TCanvas* cratio =  new TCanvas("cratio","",400,400);
-  hratio->SetMinimum(0);
-  hratio->SetMaximum(2);
-  hratio->Draw();
+  //TH1F* hratio=(TH1F*)hrebinnedspectrum->Clone("hratio");
+  //hratio->Divide(hDen);
+  //TCanvas* cratio =  new TCanvas("cratio","",400,400);
+  //hratio->SetMinimum(0);
+  //hratio->SetMaximum(2);
+  //hratio->Draw();
+
+  TCanvas* cprediction =  new TCanvas("cprediction","",400,400);
+  cprediction->SetLogy();
+  TH2F* hempty_cprediction=new TH2F("hempty_cprediction","",10,0,60.,10.,0.0001,10000000000);
+  hempty_cprediction->SetStats(0);
+  hempty_cprediction->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+  hempty_cprediction->GetYaxis()->SetTitle("dN/dpt");
+  hempty_cprediction->GetXaxis()->SetTitleOffset(1.);
+  hempty_cprediction->GetYaxis()->SetTitleOffset(.9);
+  hempty_cprediction->GetXaxis()->SetTitleSize(0.045);
+  hempty_cprediction->GetYaxis()->SetTitleSize(0.045);
+  hempty_cprediction->GetXaxis()->SetTitleFont(42);
+  hempty_cprediction->GetYaxis()->SetTitleFont(42);
+  hempty_cprediction->GetXaxis()->SetLabelFont(42);
+  hempty_cprediction->GetYaxis()->SetLabelFont(42);
+  hempty_cprediction->GetXaxis()->SetLabelSize(0.04);
+  hempty_cprediction->GetYaxis()->SetLabelSize(0.04);
+  hempty_cprediction->Draw();
+  hrebinnedspectrum->Draw("same");
+
 
 }
 
