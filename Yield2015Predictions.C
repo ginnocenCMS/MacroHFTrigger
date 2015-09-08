@@ -1,14 +1,15 @@
 void Yield2015Predictions(){
 
+  double energyfactor=2;
   #define da_BIN_NUM 11  
   Double_t dataranges[da_BIN_NUM+1] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.};
   Double_t datapoints[da_BIN_NUM] = {3.,4.,5.,6.25,8.,10.,12.,14.5,18.,24.,34.};
   Double_t ptcenters[da_BIN_NUM] = {2.91.,3.91.,4.91.,6.10.25,7.78,9.79,11.8,14.17,17.52.,22.71,31.89};
 
-  //#define NptbinTrigger 9
-  //Double_t ptbinTrigger[NptbinTrigger+1] = {5,10,15,20,25,30,35,40,45,50};
-  #define NptbinTrigger 11
-  Double_t ptbinTrigger[NptbinTrigger+1] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.};
+  #define NptbinTrigger 9
+  Double_t ptbinTrigger[NptbinTrigger+1] = {5,10,15,20,25,30,35,40,45,50};
+  //#define NptbinTrigger 11
+  //Double_t ptbinTrigger[NptbinTrigger+1] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.};
   
   TH1F* hfitref = new TH1F("hfitref","",NptbinTrigger,ptbinTrigger);
   
@@ -77,15 +78,17 @@ void Yield2015Predictions(){
   gcrosssec->Fit("fdata","q","",dataranges[0],dataranges[da_BIN_NUM]);
   
   TH1F* hrebinnedspectrum = new TH1F("hrebinnedspectrum","",NptbinTrigger,ptbinTrigger);
+  TH1F* hpredictionRawYields = new TH1F("hpredictionRawYields","",NptbinTrigger,ptbinTrigger);
   
   for (int j=0;j<NptbinTrigger;j++){
     double integ = fdata->Integral(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
-    //double integerr = fdata->IntegralError(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
     //double integ = hSpectrum->GetBinContent(hSpectrum->FindBin(datapoints[j]));
     //double yieldsfinal=integ*hfitref->GetBinWidth(j+1)*efficiency[j];
     hrebinnedspectrum->SetBinContent(j+1,integ);
-    //hrebinnedspectrum->SetBinError(j+1,integerr);
-    cout<<"dN/dpt rebinned="<<integ<<endl;
+    hrebinnedspectrum->SetBinError(j+1,TMath::Sqrt(integ));
+    hpredictionRawYields->SetBinContent(j+1,integ*energyfactor*hfitref->GetBinWidth(j+1));
+    hpredictionRawYields->SetBinError(j+1,TMath::Sqrt(integ*energyfactor*hfitref->GetBinWidth(j+1)));
+    cout<<"Yield expected="<<integ*energyfactor*hfitref->GetBinWidth(j+1)<<endl;
   }
   
   //TH1F* hratio=(TH1F*)hrebinnedspectrum->Clone("hratio");
@@ -95,14 +98,14 @@ void Yield2015Predictions(){
   //hratio->SetMaximum(2);
   //hratio->Draw();
 
-  TCanvas* cprediction =  new TCanvas("cprediction","",400,400);
+  TCanvas* cprediction =  new TCanvas("cprediction","",600,400);
   cprediction->SetLogy();
-  TH2F* hempty_cprediction=new TH2F("hempty_cprediction","",10,0,60.,10.,0.0001,10000000000);
+  TH2F* hempty_cprediction=new TH2F("hempty_cprediction","",10,0,60.,10.,1,1000000);
   hempty_cprediction->SetStats(0);
   hempty_cprediction->GetXaxis()->SetTitle("p_{T} (GeV/c)");
-  hempty_cprediction->GetYaxis()->SetTitle("dN/dpt");
+  hempty_cprediction->GetYaxis()->SetTitle("Yields from Fit @ 5.02 TeV, eff x acc=1");
   hempty_cprediction->GetXaxis()->SetTitleOffset(1.);
-  hempty_cprediction->GetYaxis()->SetTitleOffset(.9);
+  hempty_cprediction->GetYaxis()->SetTitleOffset(1.2);
   hempty_cprediction->GetXaxis()->SetTitleSize(0.045);
   hempty_cprediction->GetYaxis()->SetTitleSize(0.045);
   hempty_cprediction->GetXaxis()->SetTitleFont(42);
@@ -112,7 +115,7 @@ void Yield2015Predictions(){
   hempty_cprediction->GetXaxis()->SetLabelSize(0.04);
   hempty_cprediction->GetYaxis()->SetLabelSize(0.04);
   hempty_cprediction->Draw();
-  hrebinnedspectrum->Draw("psame");
+  hpredictionRawYields->Draw("psame");
 
 
 }
