@@ -2,6 +2,7 @@ void Yield2015Predictions(){
 
   #define da_BIN_NUM 11
   #define NptbinTrigger 11
+  
   Double_t dataranges[da_BIN_NUM+1] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.};
   Double_t datapoints[da_BIN_NUM] = {3.,4.,5.,6.25,8.,10.,12.,14.5,18.,24.,34.};
   Double_t ptcenters[da_BIN_NUM] = {2.91.,3.91.,4.91.,6.10.25,7.78,9.79,11.8,14.17,17.52.,22.71,31.89};
@@ -33,7 +34,7 @@ void Yield2015Predictions(){
       acrosssecerr[i]=hSpectrum->GetBinError(xsecbin);
       double yields=acrosssec[i]*efficiency[i]*ptbinTriggerwidth[i];
       hDen->SetBinContent(i+1,acrosssec[i]);
-      cout<<"xsecbin="<<xsecbin<<",bin center="<<datapoints[i]<<",cross section="<<acrosssec[i]<<",error="<<acrosssecerr[i]<<",eff="<<efficiency[i]<<", Nyields="<<yields<<endl;
+      cout<<"bin center="<<datapoints[i]<<",dN/dpt="<<acrosssec[i]<<",error dN/dpt="<<acrosssecerr[i]<<",eff="<<efficiency[i]<<", Nyields="<<yields<<endl;
   }   
 
   TGraphAsymmErrors* gcrosssec = new TGraphAsymmErrors(da_BIN_NUM, ptcenters, acrosssec, iexl, iexr, acrosssecerr, acrosssecerr);
@@ -72,23 +73,21 @@ void Yield2015Predictions(){
   fdata->SetParLimits(0,3.,10.);
   fdata->SetParLimits(2,-2.,0.);
   fdata->SetParLimits(3,0,1000);
-  fdata->Print();
   gcrosssec->Fit("fdata","q","",dataranges[0],dataranges[da_BIN_NUM]);
   
-  
-  TH1F* hfitref = new TH1F("hfitref","",NptbinTrigger,ptbinTrigger);
-  TH1F* hfinalspectrum = new TH1F("hfinalspectrum","",NptbinTrigger,ptbinTrigger);
+  TH1F* hrebinnedspectrum = new TH1F("hrebinnedspectrum","",NptbinTrigger,ptbinTrigger);
   
   for (int j=0;j<NptbinTrigger;j++){
     double integ = fdata->Integral(ptbinTrigger[j],ptbinTrigger[j+1])/ptbinTriggerwidth[j];
+    double integerr = fdata->IntegralError(ptbinTrigger[j],ptbinTrigger[j+1])/ptbinTriggerwidth[j];
     //double integ = hSpectrum->GetBinContent(hSpectrum->FindBin(datapoints[j]));
     //double yieldsfinal=integ*ptbinTriggerwidth[j]*efficiency[j];
-    double yieldsfinal=integ;
-    hfinalspectrum->SetBinContent(j+1,yieldsfinal);
-    cout<<"yields="<<yieldsfinal<<endl;
+    hrebinnedspectrum->SetBinContent(j+1,integ);
+    hrebinnedspectrum->SetBinError(j+1,integerr);
+    cout<<"dN/dpt rebinned="<<integ<<",error="<<integerr<<endl;
   }
   
-  TH1F* hratio=(TH1F*)hfinalspectrum->Clone("hratio");
+  TH1F* hratio=(TH1F*)hrebinnedspectrum->Clone("hratio");
   hratio->Divide(hDen);
   
   TCanvas* cratio =  new TCanvas("cratio","",400,400);
