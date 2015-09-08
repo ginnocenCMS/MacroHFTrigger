@@ -76,6 +76,7 @@ void Yield2015Predictions(){
   fdata->SetParLimits(2,-2.,0.);
   fdata->SetParLimits(3,0,1000);
   gcrosssec->Fit("fdata","q","",dataranges[0],dataranges[da_BIN_NUM]);
+  crescaled->SaveAs("crescaled.pdf");
   
   TH1F* hrebinnedspectrum = new TH1F("hrebinnedspectrum","",NptbinTrigger,ptbinTrigger);
   TH1F* hpredictionRawYields = new TH1F("hpredictionRawYields","",NptbinTrigger,ptbinTrigger);
@@ -116,6 +117,7 @@ void Yield2015Predictions(){
   hempty_cprediction->GetYaxis()->SetLabelSize(0.04);
   hempty_cprediction->Draw();
   hpredictionRawYields->Draw("psame");
+  cprediction->SaveAs("cprediction.pdf");
 
 
 }
