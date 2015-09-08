@@ -80,12 +80,12 @@ void Yield2015Predictions(){
   
   for (int j=0;j<NptbinTrigger;j++){
     double integ = fdata->Integral(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
-    double integerr = fdata->IntegralError(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
+    //double integerr = fdata->IntegralError(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
     //double integ = hSpectrum->GetBinContent(hSpectrum->FindBin(datapoints[j]));
     //double yieldsfinal=integ*hfitref->GetBinWidth(j+1)*efficiency[j];
     hrebinnedspectrum->SetBinContent(j+1,integ);
-    hrebinnedspectrum->SetBinError(j+1,integerr);
-    cout<<"dN/dpt rebinned="<<integ<<",error="<<integerr<<endl;
+    //hrebinnedspectrum->SetBinError(j+1,integerr);
+    cout<<"dN/dpt rebinned="<<integ<<endl;
   }
   
   //TH1F* hratio=(TH1F*)hrebinnedspectrum->Clone("hratio");
@@ -112,7 +112,7 @@ void Yield2015Predictions(){
   hempty_cprediction->GetXaxis()->SetLabelSize(0.04);
   hempty_cprediction->GetYaxis()->SetLabelSize(0.04);
   hempty_cprediction->Draw();
-  hrebinnedspectrum->Draw("same");
+  hrebinnedspectrum->Draw("psame");
 
 
 }
