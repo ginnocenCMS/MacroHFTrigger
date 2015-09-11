@@ -11,7 +11,7 @@ void Yield2015Predictions(){
   
   #define NptbinTriggerext 19
   Double_t ptbinTriggerext[NptbinTriggerext+1] = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100};
-  Double_t prescales[NptbinTriggerext] = {300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300};
+  Double_t prescales[NptbinTriggerext] = {300,300,300,50,50,50,50,1,1,1,1,1,1,1,1,1,1,1,1};
   
   /*
   index=6, pt centre=37.5,cross section=841.357,ratio over 28-40=1
@@ -46,7 +46,7 @@ void Yield2015Predictions(){
   TH1F* hDen = new TH1F("hDen","",da_BIN_NUM,dataranges);
   
   //1e9/30e6 x 2. x 10/1.5=444
-  hSpectrum->Scale(2*0.0388*3.01781340000000000e+07*5.67e-9*1./0.94*444.);
+  hSpectrum->Scale(2*0.0388*3.01781340000000000e+07*5.67e-9*1./0.94*222.);
 
   Double_t iexl[da_BIN_NUM],iexr[da_BIN_NUM],acrosssec[da_BIN_NUM], efficiency[da_BIN_NUM],acrosssecerr[da_BIN_NUM],aminErr[da_BIN_NUM],amaxErr[da_BIN_NUM];
   int xsecbin=-1;
@@ -150,18 +150,14 @@ void Yield2015Predictions(){
   hempty_cprediction->GetYaxis()->SetLabelSize(0.04);
   hempty_cprediction->Draw();
   hpredictionRawYields->Draw("psame");
-  TLine* lin10=new TLine(10,1.,10.,10000.);
-  lin10->SetLineStyle(2);
-  lin10->SetLineColor(kGray+1);
-  lin10->Draw();
-  TLine* lin30=new TLine(30,1.,30.,10000.);
-  lin30->SetLineStyle(2);
-  lin30->SetLineColor(2);
-  lin30->Draw();
-  TLine* lin50=new TLine(50,1.,50.,10000.);
-  lin50->SetLineStyle(2);
-  lin50->SetLineColor(2);
-  lin50->Draw();
+  TLine* lin20=new TLine(20,1.,20.,10000.);
+  lin20->SetLineStyle(2);
+  lin20->SetLineColor(kGray+1);
+  lin20->Draw();
+  TLine* lin40=new TLine(40,1.,40.,10000.);
+  lin40->SetLineStyle(2);
+  lin40->SetLineColor(2);
+  lin40->Draw();
   cprediction->SaveAs("cprediction.pdf");
 
 
