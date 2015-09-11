@@ -118,7 +118,7 @@ void Yield2015Predictions(){
     if(j>6){
       integ=hrebinnedspectrum->GetBinContent(binreference+1)*ratiorescale[j-6-1];
       hrebinnedspectrumext->SetBinContent(j+1,integ);
-      hrebinnedspectrumext->SetBinError(j+1,integ);
+      hrebinnedspectrumext->SetBinError(j+1,TMath::Sqrt(integ));
     }
     hpredictionRawYields->SetBinContent(j+1,integ*energyfactor*hfitref->GetBinWidth(j+1)/prescales[j]);
     cout<<"Yield expected="<<integ*energyfactor*hfitref->GetBinWidth(j+1)<<endl;
@@ -131,6 +131,34 @@ void Yield2015Predictions(){
   //hratio->SetMinimum(0);
   //hratio->SetMaximum(2);
   //hratio->Draw();
+  
+  
+  TCanvas* cData =  new TCanvas("cData","",600,400);
+  cData->SetLogy();
+  TH2F* hempty_cData=new TH2F("hempty_cData","",10,0,100.,10.,0.001,1000000000);
+  hempty_cData->SetStats(0);
+  hempty_cData->GetXaxis()->SetTitle("p_{T} (GeV/c)");
+  hempty_cData->GetYaxis()->SetTitle("rebinned CMS result @2.76 TeV");
+  hempty_cData->GetXaxis()->SetTitleOffset(1.);
+  hempty_cData->GetYaxis()->SetTitleOffset(1.2);
+  hempty_cData->GetXaxis()->SetTitleSize(0.045);
+  hempty_cData->GetYaxis()->SetTitleSize(0.045);
+  hempty_cData->GetXaxis()->SetTitleFont(42);
+  hempty_cData->GetYaxis()->SetTitleFont(42);
+  hempty_cData->GetXaxis()->SetLabelFont(42);
+  hempty_cData->GetYaxis()->SetLabelFont(42);
+  hempty_cData->GetXaxis()->SetLabelSize(0.04);
+  hempty_cData->GetYaxis()->SetLabelSize(0.04);
+  hempty_cData->Draw();
+  hrebinnedspectrum->Draw("same");
+  hrebinnedspectrum->SetLineColor(1);
+  hrebinnedspectrum->SetLineWidth(2);
+  hrebinnedspectrumext->SetLineColor(2);
+  hrebinnedspectrumext->SetMarkerColor(2);
+  hrebinnedspectrumext->Draw("same");
+  cData->SaveAs("cdata.pdf");
+
+  
 
   TCanvas* cprediction =  new TCanvas("cprediction","",600,400);
   cprediction->SetLogy();
