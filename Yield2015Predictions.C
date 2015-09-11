@@ -6,8 +6,9 @@ void Yield2015Predictions(){
   Double_t datapoints[da_BIN_NUM] = {3.,4.,5.,6.25,8.,10.,12.,14.5,18.,24.,34.};
   Double_t ptcenters[da_BIN_NUM] = {2.91.,3.91.,4.91.,6.10.25,7.78,9.79,11.8,14.17,17.52.,22.71,31.89};
 
-  #define NptbinTrigger 9
-  Double_t ptbinTrigger[NptbinTrigger+1] = {5,10,15,20,25,30,35,40,45,50};
+  #define NptbinTrigger 15
+  Double_t ptbinTrigger[NptbinTrigger+1] = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80};
+  Double_t prescales[NptbinTrigger] = {1,300,300,300,300,200,200,200,200,1,1,1,1,1,1};
   //#define NptbinTrigger 11
   //Double_t ptbinTrigger[NptbinTrigger+1] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.};
   
@@ -21,7 +22,8 @@ void Yield2015Predictions(){
   
   TH1F* hDen = new TH1F("hDen","",da_BIN_NUM,dataranges);
   
-  hSpectrum->Scale(2*0.0388*3.01781340000000000e+07*5.67e-9*1./0.94);
+  //1e9/30e6 x 2. x 10/1.5=444
+  hSpectrum->Scale(2*0.0388*3.01781340000000000e+07*5.67e-9*1./0.94*444.);
 
   Double_t iexl[da_BIN_NUM],iexr[da_BIN_NUM],acrosssec[da_BIN_NUM], efficiency[da_BIN_NUM],acrosssecerr[da_BIN_NUM],aminErr[da_BIN_NUM],amaxErr[da_BIN_NUM];
   int xsecbin=-1;
@@ -82,7 +84,7 @@ void Yield2015Predictions(){
   TH1F* hpredictionRawYields = new TH1F("hpredictionRawYields","",NptbinTrigger,ptbinTrigger);
   
   for (int j=0;j<NptbinTrigger;j++){
-    double integ = fdata->Integral(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1);
+    double integ = fdata->Integral(ptbinTrigger[j],ptbinTrigger[j+1])/hfitref->GetBinWidth(j+1)/prescales[j];
     //double integ = hSpectrum->GetBinContent(hSpectrum->FindBin(datapoints[j]));
     //double yieldsfinal=integ*hfitref->GetBinWidth(j+1)*efficiency[j];
     hrebinnedspectrum->SetBinContent(j+1,integ);
@@ -101,7 +103,7 @@ void Yield2015Predictions(){
 
   TCanvas* cprediction =  new TCanvas("cprediction","",600,400);
   cprediction->SetLogy();
-  TH2F* hempty_cprediction=new TH2F("hempty_cprediction","",10,0,60.,10.,1,1000000);
+  TH2F* hempty_cprediction=new TH2F("hempty_cprediction","",10,0,80.,10.,1,1000000);
   hempty_cprediction->SetStats(0);
   hempty_cprediction->GetXaxis()->SetTitle("p_{T} (GeV/c)");
   hempty_cprediction->GetYaxis()->SetTitle("Yields from Fit @ 5.02 TeV, eff x acc=1");
@@ -117,6 +119,18 @@ void Yield2015Predictions(){
   hempty_cprediction->GetYaxis()->SetLabelSize(0.04);
   hempty_cprediction->Draw();
   hpredictionRawYields->Draw("psame");
+  TLine* lin10=new TLine(10,1.,10.,10000.);
+  lin10->SetLineStyle(2);
+  lin10->SetLineColor(kGray+1);
+  lin10->Draw();
+  TLine* lin30=new TLine(30,1.,30.,10000.);
+  lin30->SetLineStyle(2);
+  lin30->SetLineColor(2);
+  lin30->Draw();
+  TLine* lin50=new TLine(50,1.,50.,10000.);
+  lin50->SetLineStyle(2);
+  lin50->SetLineColor(2);
+  lin50->Draw();
   cprediction->SaveAs("cprediction.pdf");
 
 
