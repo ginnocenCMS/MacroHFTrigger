@@ -7,8 +7,8 @@
 #include <iostream>
 
 #define BIN_NUM 392 //pPb_pt:220,pPb_y:40,pp_pt:222,pp_y:45
-#define REBIN 16     //pPb_pt:6,pPb_y:4,pp_pt:8,pp_y:4
-#define REBINp 17    //pPb_pt:7,pPb_y:5,pp_pt:9,pp_y:5
+#define REBIN 19     //pPb_pt:6,pPb_y:4,pp_pt:8,pp_y:4
+#define REBINp 20    //pPb_pt:7,pPb_y:5,pp_pt:9,pp_y:5
 #define HMIN 1      //pPb_pt:5,pPb_y:-2,pp_pt:9,pp_y:0
 #define HMAX 100     //pPb_pt:55,pPb_y:2,pp_pt:120,pp_y:2.25
 
@@ -67,7 +67,7 @@ int Dzerodsigmadpt()
       hmaxpdf->SetBinContent(i+1,max_pdf[i]);
     }
   //Rebin Edge
-  double rebin[REBINp] = {2.5,3.5,4.5,5.5,7.,9.,11.,13.,16.,20.,28.,40.,50.,60.,70.,80.,100};
+  double rebin[REBINp] = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100};
 
   TH1F* hpt_rebin = (TH1F*)hpt->Rebin(REBIN,"hpt_rebin",rebin);
   TH1F* hminall_rebin = (TH1F*)hminsc->Rebin(REBIN,"hminall_rebin",rebin);
@@ -80,13 +80,13 @@ int Dzerodsigmadpt()
   TH1F* hmaxpdf_rebin = (TH1F*)hmaxpdf->Rebin(REBIN,"hmaxpdf_rebin",rebin);
 
   //bin middle
-  double apt[REBIN] = {3,4,5,6.25,8,10,12,14.5,18,24,34,45,55,65,75,90};//pPb_pt
+  double apt[REBIN] = {7.5,12.5,17.5,22.5,27.5,32.5,37.5,42.5,47.5,52.5,57.5,62.5,67.5,72.5,77.5,82.5,87.5,92.5,97.5};
   //bin half width
-  double aptl[REBIN] = {0.5,0.5,0.5,0.75,1,1,1,1.5,2,4,6,5,5,5,5,10};//pPb_pt
+  double aptl[REBIN] = {2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5,2.5};
   double asigma[REBIN],aminall[REBIN],amaxall[REBIN],aminsc[REBIN],amaxsc[REBIN],aminmass[REBIN],amaxmass[REBIN],aminpdf[REBIN],amaxpdf[REBIN],aerrorl[REBIN],aerrorh[REBIN];
 
   //number of every rebined bin
-  double bin_num[REBIN] = {4,4,4,6,8,8,8,12,16,32,48,40,40,40,40,80};//pPb_pt
+  double bin_num[REBIN] = {20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20,20};
   
   int j;
     
