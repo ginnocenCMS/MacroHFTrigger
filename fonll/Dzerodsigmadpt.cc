@@ -220,7 +220,7 @@ int Dzerodsigmadpt()
   tlatextemp->Draw();
 
   for (int i=0;i<REBIN;i++){
-    std::cout<<"index="<<i<<", pt centre="<<apt[i]<<",cross section="<<asigma[i]<<",ratio over 28-40="<<asigma[i]/asigma[10]<<std::endl;
+    std::cout<<"index="<<i<<", pt centre="<<apt[i]<<",cross section="<<asigma[i]<<",ratio over 28-40="<<asigma[i]/asigma[6]<<std::endl;
   }
   gaeSigma->SetName("gaeSigma");
   gaeSigmaDzero->SetName("gaeSigmaDzero");
