@@ -11,7 +11,9 @@ void Yield2015Predictions(){
   
   #define NptbinTriggerext 19
   Double_t ptbinTriggerext[NptbinTriggerext+1] = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100};
-  Double_t prescales[NptbinTriggerext] = {300,300,300,50,50,50,50,1,1,1,1,1,1,1,1,1,1,1,1};
+  Double_t prescales[NptbinTriggerext] = {60,60,60,60,60,60,60,60,1,1,1,1,1,1,1,1,1,1,1};
+  //Double_t prescales[NptbinTriggerext] = {300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300};
+  //Double_t prescales[NptbinTriggerext] = {300,300,300,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50};
   
   /*
   index=6, pt centre=37.5,cross section=841.357,ratio over 28-40=1
@@ -61,7 +63,7 @@ void Yield2015Predictions(){
       acrosssecerr[i]=hSpectrum->GetBinError(xsecbin);
       double yields=acrosssec[i]*efficiency[i]*(dataranges[i+1]-dataranges[i]);
       hDen->SetBinContent(i+1,acrosssec[i]);
-      cout<<"bin center="<<datapoints[i]<<",dN/dpt="<<acrosssec[i]<<",error dN/dpt="<<acrosssecerr[i]<<",eff="<<efficiency[i]<<", Nyields="<<yields<<endl;
+      cout<<"bin center="<<datapoints[i]<<",dN/dpt="<<acrosssec[i]<<",error dN/dpt="<<acrosssecerr[i]/acrosssec[i]<<",eff="<<efficiency[i]<<", Nyields="<<yields<<endl;
   }   
 
   TGraphAsymmErrors* gcrosssec = new TGraphAsymmErrors(da_BIN_NUM, ptcenters, acrosssec, iexl, iexr, acrosssecerr, acrosssecerr);
