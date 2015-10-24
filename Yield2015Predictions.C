@@ -11,7 +11,7 @@ void Yield2015Predictions(){
   
   #define NptbinTriggerext 19
   Double_t ptbinTriggerext[NptbinTriggerext+1] = {5,10,15,20,25,30,35,40,45,50,55,60,65,70,75,80,85,90,95,100};
-  Double_t prescales[NptbinTriggerext] = {60,60,60,60,60,60,60,60,1,1,1,1,1,1,1,1,1,1,1};
+  Double_t prescales[NptbinTriggerext] = {60,60,60,30,30,30,30,1,1,1,1,1,1,1,1,1,1,1,1};
   //Double_t prescales[NptbinTriggerext] = {300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300,300};
   //Double_t prescales[NptbinTriggerext] = {300,300,300,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50};
   
