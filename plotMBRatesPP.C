@@ -111,6 +111,13 @@ void plotMBRatesPP(int totall1rate=1600*1.4*11245){
    // /counter_L1_ZeroBias*totall1rate
    
    cout<<"---------------------------- Rates ----------------------------"<<endl;
+   cout<<"HLT_AK4PFBJetBCSV60_Eta2p1_v1="<<counter_HLT_AK4PFBJetBCSV60_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
+   cout<<"HLT_AK4PFBJetBCSV80_Eta2p1_v1="<<counter_HLT_AK4PFBJetBCSV80_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
+   cout<<"HLT_AK4PFDJet60_Eta2p1_v1="<<counter_HLT_AK4PFDJet60_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
+   cout<<"HLT_AK4PFDJet80_Eta2p1_v1="<<counter_HLT_AK4PFDJet80_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
+   cout<<"HLT_AK4PFBJetBSSV60_Eta2p1_v1="<<counter_HLT_AK4PFBJetBSSV60_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
+   cout<<"HLT_AK4PFBJetBSSV80_Eta2p1_v1="<<counter_HLT_AK4PFBJetBSSV80_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
+
    cout<<"HLT_DmesonPPTrackingGlobal_Dpt8_v1="<<counter_HLT_DmesonPPTrackingGlobal_Dpt8_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
    cout<<"HLT_DmesonPPTrackingGlobal_Dpt15_v1="<<counter_HLT_DmesonPPTrackingGlobal_Dpt15_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
    cout<<"HLT_DmesonPPTrackingGlobal_Dpt20_v1="<<counter_HLT_DmesonPPTrackingGlobal_Dpt20_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
@@ -118,14 +125,6 @@ void plotMBRatesPP(int totall1rate=1600*1.4*11245){
    cout<<"HLT_DmesonPPTrackingGlobal_Dpt40_v1="<<counter_HLT_DmesonPPTrackingGlobal_Dpt40_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
    cout<<"HLT_DmesonPPTrackingGlobal_Dpt50_v1="<<counter_HLT_DmesonPPTrackingGlobal_Dpt50_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
    cout<<"HLT_DmesonPPTrackingGlobal_Dpt60_v1="<<counter_HLT_DmesonPPTrackingGlobal_Dpt60_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
-   
-   
-   cout<<"HLT_AK4PFBJetBSSV80_Eta2p1_v1="<<counter_HLT_AK4PFBJetBSSV80_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
-   cout<<"HLT_AK4PFBJetBSSV60_Eta2p1_v1="<<counter_HLT_AK4PFBJetBSSV60_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
-   cout<<"HLT_AK4PFBJetBCSV80_Eta2p1_v1="<<counter_HLT_AK4PFBJetBCSV80_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
-   cout<<"HLT_AK4PFBJetBCSV60_Eta2p1_v1="<<counter_HLT_AK4PFBJetBCSV60_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
-   cout<<"HLT_AK4PFDJet60_Eta2p1_v1="<<counter_HLT_AK4PFDJet60_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
-   cout<<"HLT_AK4PFDJet80_Eta2p1_v1="<<counter_HLT_AK4PFDJet80_Eta2p1_v1/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
    
    cout<<"L1_SingleJet16_BptxAND="<<counter_L1_SingleJet16_BptxAND/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
    cout<<"L1_SingleJet24_BptxAND="<<counter_L1_SingleJet24_BptxAND/counter_L1_ZeroBias*totall1rate<<" Hz"<<endl;
